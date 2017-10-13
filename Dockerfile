@@ -2,7 +2,9 @@
 # Latest ubuntu LTS
 FROM ubuntu:16.04
 RUN apt-get update && apt-get install -y rsyslog
+# copy all the configuration information into the right place
+copy src/etc/rsyslogd-min.conf /etc/rsyslogd-min.conf
+# CMD [ "sh","-c" "ln", "-sf" "/var/run/rsyslog/dev/log", "/dev/log" ]
 # The VOLUME instruction creates a mount point with the specified name and marks it as holding externally mounted volumes from native host or other containers
-CMD [ "sh","-c" "ln", "-sf" "/var/run/rsyslog/dev/log", "/dev/log" ]
 VOLUME /var/run/rsyslog/dev
-ENTRYPOINT ["rsyslogd","-n","-f","/etc/rsyslogd.conf"]
+ENTRYPOINT ["rsyslogd","-n","-f","/etc/rsyslogd-min.conf"]
