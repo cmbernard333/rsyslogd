@@ -1,5 +1,6 @@
 #!/bin/bash
 TAGS=()
+RUN=false
 for i in "$@"
 do
 case ${i} in
@@ -10,6 +11,10 @@ case ${i} in
     -t=*|--tag=*)
     TAGS+=("${i#*=}")
     shift # past argument=value
+    ;;
+    -r|--run)
+    RUN=true
+    shift
     ;;
     *)
             # unknown option
@@ -28,7 +33,7 @@ fi
 # operating system check
 OS=`echo $OS | tr '[:upper:]' '[:lower:]'`
 if [ "$OS" = "ubuntu" ]; then
-	DOCKERFILE=docker/ubuntu/Dockerfile	
+	DOCKERFILE=docker/ubuntu/Dockerfile
 elif [ "$OS" = "alpine" ]; then
 	DOCKERFILE=docker/alpine/Dockerfile
 fi
@@ -37,5 +42,7 @@ TAGS_STR=$( IFS=$' '; echo "${TAGS[*]}" )
 
 docker stop logdemon && docker rm logdemon
 docker build --no-cache $TAGS_STR -f "${DOCKERFILE}" .
-# docker run -d --name logdemon automox/logdemon:latest
+if [ "${RUN}" = "true" ]; then
+    docker run -d --name logdemon automox/logdemon:latest
+fi
 
