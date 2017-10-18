@@ -22,7 +22,7 @@ done
 TAGS+=("-t automox/logdemon:latest")
 
 # operating system check
-DOCKERFILE=docker/ubuntu/Dockerfile
+DOCKERFILE=Dockerfile
 
 TAGS_STR=$( IFS=$' '; echo "${TAGS[*]}" )
 
