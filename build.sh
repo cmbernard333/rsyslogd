@@ -1,6 +1,8 @@
 #!/bin/bash
 TAGS=()
+LATEST_TAG=automox/logdemon:latest
 RUN=false
+CACHE="--no-cache"
 for i in "$@"
 do
 case ${i} in
@@ -12,6 +14,10 @@ case ${i} in
     RUN=true
     shift
     ;;
+    -n|--no-cache)
+    CACHE=""
+    shift
+    ;;
     *)
             # unknown option
     ;;
@@ -19,16 +25,14 @@ esac
 done
 
 # default values
-TAGS+=("-t automox/logdemon:latest")
-
-# operating system check
+TAGS+=("-t $LATEST_TAG")
 DOCKERFILE=Dockerfile
-
 TAGS_STR=$( IFS=$' '; echo "${TAGS[*]}" )
 
 docker stop logdemon && docker rm logdemon
-docker build --no-cache $TAGS_STR -f "${DOCKERFILE}" .
+docker build ${CACHE} ${TAGS_STR} -f "${DOCKERFILE}" .
 if [ "${RUN}" = "true" ]; then
-    docker run -d --name logdemon --mount src=rsyslog-remote,dst=/var/run/rsyslog automox/logdemon:latest
+    # mounting docker volume 'rsyslog-remote' to /var/run/rsyslog/dev to get access to the 'log' socket
+    docker run -d --name logdemon --mount src=rsyslog-remote,dst=/var/run/rsyslog ${LATEST_TAG}
 fi
 
