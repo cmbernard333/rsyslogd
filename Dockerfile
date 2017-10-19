@@ -8,5 +8,5 @@ COPY src/etc/rsyslog.d /etc/rsyslog.d
 # need a config file that removes the /dev/xconsole redirect as the docker container doesn't have it
 COPY src/etc/50-default-trim.conf /etc/rsyslog.d/50-default.conf
 # The VOLUME instruction creates a mount point with the specified name and marks it as holding externally mounted volumes from native host or other containers
-VOLUME /var/run/rsyslog/dev
+# VOLUME /var/run/rsyslog/dev
 ENTRYPOINT [ "rsyslogd", "-n", "-f","/etc/rsyslog-min.conf" ]

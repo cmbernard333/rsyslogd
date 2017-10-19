@@ -29,6 +29,6 @@ TAGS_STR=$( IFS=$' '; echo "${TAGS[*]}" )
 docker stop logdemon && docker rm logdemon
 docker build --no-cache $TAGS_STR -f "${DOCKERFILE}" .
 if [ "${RUN}" = "true" ]; then
-    docker run -d --name logdemon automox/logdemon:latest
+    docker run -d --name logdemon --mount src=rsyslog-remote,dst=/var/run/rsyslog automox/logdemon:latest
 fi
 
