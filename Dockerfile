@@ -1,6 +1,8 @@
 # Create a minial ubuntu image that runs rsyslogd
 # Latest ubuntu LTS
-FROM ubuntu:16.04 
+FROM ubuntu:16.04
+RUN apt-get update && apt-get install -y software-properties-common python-software-properties
+RUN add-apt-repository -y ppa:adiscon/v8-stable # latest rsyslog to get rotation support (8.30 @ 10/20/2017)
 RUN apt-get update && apt-get install -y rsyslog
 # copy all the configuration information into the right place
 COPY src/etc/rsyslog-min.conf /etc/rsyslog-min.conf
