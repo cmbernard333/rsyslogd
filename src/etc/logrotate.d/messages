@@ -1,0 +1,9 @@
+/var/run/rsyslog/messages {
+    hourly
+    missingok
+    rotate 1
+    compress
+    delaycompress
+    notifempty
+    copytruncate
+}
