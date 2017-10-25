@@ -1,18 +1,19 @@
 #!/bin/bash
-COUNT=0
-MAX=3
-LOG_FILE=/var/run/rsyslog/messages
-if [ -e "${LOG_FILE}" ]; then
-    # increment
-    COUNT=`expr $((COUNT+1))`
-    # cleanup
-    if [ "$COUNT" -gt "$MAX" ]; then
-        COUNT=1
-        for num in {1..$MAX}; do
-            rm "${LOG_FILE}".$COUNT
-        done
-    fi
-    # rotate
-    mv -f "${LOG_FILE}" "${LOG_FILE}".$COUNT
-fi
+/usr/sbin/logrotate -f /etc/logrotate.d/messages
+# COUNT=0
+# MAX=3
+# LOG_FILE=/var/run/rsyslog/messages
+# if [ -e "${LOG_FILE}" ]; then
+#     # increment
+#     COUNT=`expr $((COUNT+1))`
+#     # cleanup
+#     if [ "$COUNT" -gt "$MAX" ]; then
+#         COUNT=1
+#         for num in {1..$MAX}; do
+#             rm "${LOG_FILE}".$COUNT
+#         done
+#     fi
+#     # rotate
+#     mv -f "${LOG_FILE}" "${LOG_FILE}".$COUNT
+# fi
 exit 0
